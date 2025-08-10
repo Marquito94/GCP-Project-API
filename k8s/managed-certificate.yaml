@@ -1,7 +1,8 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: api-cert
+  name: backend-cert
   namespace: apps
 spec:
-  domains: [ "apipueba-web-dev.com" ]
+  domains:
+    - backend.apipueba-web-dev.com
