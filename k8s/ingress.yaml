@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.regional-static-ip-name: "api-ilbv2-ip"
 spec:
   rules:
-    - host: backend.internal
+    - host: backend.internal.apipueba-web-dev.com
       http:
         paths:
           - path: /solutions
