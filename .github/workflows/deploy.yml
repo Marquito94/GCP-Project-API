@@ -54,8 +54,7 @@ jobs:
           
       - uses: google-github-actions/setup-gcloud@v2
         with:
-          install_components: true
-          components: gke-gcloud-auth-plugin,kubectl
+          install_components: gke-gcloud-auth-plugin,kubectl
   
       # Tell kubectl to use the plugin
       - name: Enable GKE auth plugin
