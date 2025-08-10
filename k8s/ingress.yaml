@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-backend
+  namespace: apps
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/managed-certificates: "api-cert"
+spec:
+  rules:
+    - host: apipueba-web-dev.com
+      http:
+        paths:
+          - path: /solutions
+            pathType: Prefix
+            backend:
+              service:
+                name: api-backend
+                port: { number: 80 }
+          - path: /delivery
+            pathType: Prefix
+            backend:
+              service:
+                name: api-backend
+                port: { number: 80 }
+          - path: /status
+            pathType: Prefix
+            backend:
+              service:
+                name: api-backend
+                port: { number: 80 }

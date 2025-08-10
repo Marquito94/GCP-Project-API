@@ -1,0 +1,67 @@
+name: Build and Deploy API
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_gke:
+        description: "Deploy manifests to GKE after pushing the image?"
+        type: boolean
+        default: false
+      tag:
+        description: "Image tag (default: short SHA)"
+        type: string
+        required: false
+
+env:
+  PROJECT_ID: your-project-id
+  REGION: us-central1
+  AR_REPO: apps
+  IMAGE_NAME: api-backend
+  CLUSTER_NAME: web-apis
+  GKE_LOCATION: us-central1
+  K8S_NAMESPACE: apps
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          project_id: ${{ env.PROJECT_ID }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - run: gcloud auth configure-docker "${{ env.REGION }}-docker.pkg.dev"
+      - run: |
+          TAG="${{ github.event.inputs.tag || github.sha }}"
+          IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.AR_REPO }}/${{ env.IMAGE_NAME }}:$TAG"
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-ref
+          path: image.txt
+        run: echo "$IMAGE" > image.txt
+
+  deploy:
+    needs: build-and-push
+    if: ${{ github.event.inputs.deploy_gke == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          project_id: ${{ env.PROJECT_ID }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - run: gcloud container clusters get-credentials "${{ env.CLUSTER_NAME }}" --region "${{ env.GKE_LOCATION }}" --project "${{ env.PROJECT_ID }}"
+      - run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/service.yaml
+          kubectl apply -f k8s/managed-certificate.yaml
+          kubectl apply -f k8s/ingress.yaml
+          kubectl apply -f k8s/hpa.yaml
+          kubectl apply -f k8s/deployment.yaml
