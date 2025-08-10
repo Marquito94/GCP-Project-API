@@ -3,10 +3,12 @@ kind: Service
 metadata:
   name: api-backend
   namespace: apps
-  labels: { app: api-backend }
+  labels:
+    app: api-backend
 spec:
   type: ClusterIP
-  selector: { app: api-backend }
+  selector:
+    app: api-backend
   ports:
     - name: http
       port: 80
