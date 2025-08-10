@@ -10,6 +10,8 @@ app.use(cors({ origin: ALLOWED_ORIGIN }));
 app.use(express.json());
 app.use(morgan("tiny"));
 
+app.get("/", (_req, res) => res.status(200).send("ok"));
+
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, service: "api-backend", ts: new Date().toISOString() });
 });
