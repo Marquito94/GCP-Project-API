@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: api-backend
-          image: us-central1-docker.pkg.dev/app-dev-468521/apps/api-backend:1c6995fa7d0a1d4ff31c24cb037a125f59c6f69a   # <-- set your image
+          image: us-central1-docker.pkg.dev/app-dev-468521/apps/api-backend:89d2cce5106d864567a212782e7676f32bd84cb2   # <-- set your image
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
