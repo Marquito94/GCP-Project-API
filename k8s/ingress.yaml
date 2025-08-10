@@ -1,10 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-backend
+  name: api-backend-ilb
   namespace: apps
   annotations:
     kubernetes.io/ingress.class: "gce-internal"
+    kubernetes.io/ingress.regional-static-ip-name: "api-ilb-ip"
 spec:
   rules:
     - host: backend.internal
@@ -12,22 +13,10 @@ spec:
         paths:
           - path: /solutions
             pathType: Prefix
-            backend:
-              service:
-                name: api-backend      # ClusterIP
-                port:
-                  number: 80
+            backend: { service: { name: api-backend, port: { number: 80 } } }
           - path: /delivery
             pathType: Prefix
-            backend:
-              service:
-                name: api-backend
-                port:
-                  number: 80
+            backend: { service: { name: api-backend, port: { number: 80 } } }
           - path: /status
             pathType: Prefix
-            backend:
-              service:
-                name: api-backend
-                port:
-                  number: 80
+            backend: { service: { name: api-backend, port: { number: 80 } } }
