@@ -4,11 +4,11 @@ metadata:
   name: api-backend
   namespace: apps
   annotations:
-    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.class: "gce-internal"
     networking.gke.io/managed-certificates: "backend-cert"
 spec:
   rules:
-    - host: backend.apipueba-web-dev.com
+    - host: backend.internal
       http:
         paths:
           - path: /solutions
