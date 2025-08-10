@@ -18,7 +18,7 @@ env:
   AR_REPO: apps
   IMAGE_NAME: api-backend
   CLUSTER_NAME: web-apis
-  GKE_LOCATION: us-central1
+  GKE_LOCATION: us-central1-a
   K8S_NAMESPACE: apps
 
 jobs:
