@@ -5,7 +5,7 @@ metadata:
   namespace: apps
   annotations:
     kubernetes.io/ingress.class: "gce-internal"
-    kubernetes.io/ingress.regional-static-ip-name: "api-ilb-ip"
+    kubernetes.io/ingress.regional-static-ip-name: "api-ilbv2-ip"
 spec:
   rules:
     - host: backend.internal
