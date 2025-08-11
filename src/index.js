@@ -10,7 +10,9 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 app.use((req, res, next) => {
-  if (req.headers.host && req.headers.host !== 'api.pueba-web-dev.com') {
+  const host = (req.headers.host || '').toLowerCase().split(':')[0];
+  if (host && host !== 'api.pueba-web-dev.com') {
+    // 421 is “Misdirected Request” – nice fit for Host mismatches
     return res.status(421).send('Misdirected Request');
   }
   next();
