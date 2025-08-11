@@ -10,8 +10,9 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 app.use((req, res, next) => {
-  res.set('X-App-Host', req.headers.host || '');
-  res.set('X-App-HTTP-Version', req.httpVersion);
+  if (req.headers.host && req.headers.host !== 'api.pueba-web-dev.com') {
+    return res.status(421).send('Misdirected Request');
+  }
   next();
 });
 
