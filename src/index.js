@@ -9,15 +9,6 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "https://pueba-web-dev.com"
 app.use(express.json());
 app.use(morgan("tiny"));
 
-app.use((req, res, next) => {
-  const host = (req.headers.host || '').toLowerCase().split(':')[0];
-  if (host && host !== 'api.pueba-web-dev.com') {
-    // 421 is “Misdirected Request” – nice fit for Host mismatches
-    return res.status(421).send('Misdirected Request');
-  }
-  next();
-});
-
 console.log('Host:', req.headers.host);
 console.log('X-Target-Host:', req.headers['x-target-host']);
 console.log('X-Forwarded-Host:', req.headers['x-forwarded-host']);
