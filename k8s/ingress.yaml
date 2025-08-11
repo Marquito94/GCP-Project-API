@@ -4,19 +4,30 @@ metadata:
   name: api-backend-ilb
   namespace: apps
   annotations:
-    kubernetes.io/ingress.class: "gce-internal"
-    kubernetes.io/ingress.regional-static-ip-name: "api-ilbv2-ip"
+    kubernetes.io/ingress.class: gce-internal
+    kubernetes.io/ingress.regional-static-ip-name: api-ilbv2-ip
 spec:
   rules:
-    - host: api.pueba-web-dev.com
-      http:
-        paths:
-          - path: /solutions
-            pathType: Prefix
-            backend: { service: { name: api-backend, port: { number: 80 } } }
-          - path: /delivery
-            pathType: Prefix
-            backend: { service: { name: api-backend, port: { number: 80 } } }
-          - path: /status
-            pathType: Prefix
-            backend: { service: { name: api-backend, port: { number: 80 } } }
+  - http:
+      paths:
+      - path: /status
+        pathType: Prefix
+        backend:
+          service:
+            name: api-backend
+            port:
+              number: 80
+      - path: /solutions
+        pathType: Prefix
+        backend:
+          service:
+            name: api-backend
+            port:
+              number: 80
+      - path: /delivery
+        pathType: Prefix
+        backend:
+          service:
+            name: api-backend
+            port:
+              number: 80
