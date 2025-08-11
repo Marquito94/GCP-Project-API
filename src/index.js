@@ -9,6 +9,12 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "https://pueba-web-dev.com"
 app.use(express.json());
 app.use(morgan("tiny"));
 
+app.use((req, res, next) => {
+  res.set('X-App-Host', req.headers.host || '');
+  res.set('X-App-HTTP-Version', req.httpVersion);
+  next();
+});
+
 app.get("/", (_req, res) => res.status(200).send("ok"));
 
 app.get("/api/health", (_req, res) => {
