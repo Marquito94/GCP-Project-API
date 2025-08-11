@@ -23,6 +23,7 @@ env:
 
 jobs:
   build-and-push:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +43,7 @@ jobs:
 
 
   deploy:
-    needs: build-and-push
+    # needs: build-and-push
     if: ${{ github.event.inputs.deploy_gke == 'true' }}
     runs-on: ubuntu-latest
     steps:
