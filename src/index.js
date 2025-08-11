@@ -18,6 +18,10 @@ app.use((req, res, next) => {
   next();
 });
 
+console.log('Host:', req.headers.host);
+console.log('X-Target-Host:', req.headers['x-target-host']);
+console.log('X-Forwarded-Host:', req.headers['x-forwarded-host']);
+
 app.get("/", (_req, res) => res.status(200).send("ok"));
 
 app.get("/api/health", (_req, res) => {
