@@ -6,7 +6,6 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "https://pueba-web-dev.com";
 
-app.use(cors({ origin: ALLOWED_ORIGIN }));
 app.use(express.json());
 app.use(morgan("tiny"));
 
